@@ -52,7 +52,7 @@ export default function Register() {
       setIsSuccess(true);
       reset();
       setPreviewImage(null);
-      setTimeout(() => navigate("/"), 1500);
+      setTimeout(() => navigate("/"), 4000);
     } catch (error) {
       setServerError(error.response?.data?.message || "Registration failed. Please try again.");
     }
