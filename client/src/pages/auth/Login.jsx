@@ -46,7 +46,7 @@ export default function Login() {
       if (loginUser.fulfilled.match(resultAction)) {
         setIsSuccess(true);
         const loggedInUser = resultAction.payload;
-        setTimeout(() => navigate(ROLE_REDIRECT[loggedInUser.role] ?? "/"), 1200);
+        setTimeout(() => navigate(ROLE_REDIRECT[loggedInUser.role] ?? "/"), 4000);
       } else {
         setServerError(resultAction.payload || "Login failed. Please try again.");
       }
