@@ -6,13 +6,17 @@ import authRoutes from "../routes/auth.route.js";
 import userRoutes from "../routes/users.route.js";
 import attendanceRoutes from "../routes/attendance.route.js";
 import globleErrorHandler from "../middlewares/error.middelware.js";
+import env from "dotenv";
+env.config()
+
 
 const app = express();
+app.set("trust proxy", 1);
 
 app.use(morgan("dev"));
 app.use(cors({
-  origin: "process.env.FRONTEND_URL",
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
 app.use(express.json());

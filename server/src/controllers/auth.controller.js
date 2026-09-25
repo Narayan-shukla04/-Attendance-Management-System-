@@ -4,6 +4,13 @@ import generateToken from "../utils/token.js";
 import { appError } from "../utils/appError.js";
 import jwt from "jsonwebtoken";
 
+const isProd = process.env.NODE_ENV === "production";
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? "none" : "lax",
+};
+
 export const registerController = async (req, res) => {
   const { name, email, password, role, managerId } = req.body;
   const file = req.file;
@@ -23,15 +30,11 @@ export const registerController = async (req, res) => {
   const refreshToken = generateToken(user._id, "7d");
 
   res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    ...cookieOptions,
     maxAge: 30 * 60 * 1000,
   });
   res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    ...cookieOptions,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
@@ -55,15 +58,11 @@ export const loginController = async (req, res) => {
   const refreshToken = generateToken(user._id, "7d");
 
   res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    ...cookieOptions,
     maxAge: 30 * 60 * 1000,
   });
   res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    ...cookieOptions,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
@@ -75,8 +74,8 @@ export const loginController = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  res.clearCookie("accessToken");
-  res.clearCookie("refreshToken");
+  res.clearCookie("accessToken", cookieOptions);
+  res.clearCookie("refreshToken", cookieOptions);
   return res.status(200).json({
     success: true,
     message: "user logged out successfully",
@@ -93,9 +92,7 @@ export const refreshAccessToken = async (req, res) => {
 
   const accessToken = generateToken(user._id, "30min");
   res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    ...cookieOptions,
     maxAge: 30 * 60 * 1000,
   });
 

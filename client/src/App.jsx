@@ -10,6 +10,7 @@ const App = () => {
     dispatch(fetchCurrentUser());
   }, [dispatch]);
 
+
   return <Approuter />;
 };
 
